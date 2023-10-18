@@ -352,10 +352,6 @@ function render() {
   bolas.atualizaEstado(velocidade_bola);
   powerups.atualizaEstado(VELOCIDADE_POWERUP);
 
-  bolas.bolas.forEach(element => {
-    console.log(element.angle);
-  });
-
   requestAnimationFrame(render);
   renderer.render(scene, camera);
 }
