@@ -111,7 +111,7 @@ Blocos.prototype.calcAngulo = function(bola, bloco){
     bloco.obj.getWorldPosition(blocos_position);
     bola.obj.getWorldPosition(bola_position);
 
-    if(angle > 90 && angle < 270){
+    if(angle >= 90 && angle <= 270){
         //colisao esquerda
         if(bola_position.x > blocos_position.x + this.largura_bloco/2 + bola.raio/3){
             return calcAnguloSaida(angle,90);

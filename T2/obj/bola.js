@@ -72,11 +72,18 @@ Bola.prototype.setPosition = function(x,y,z){
 }
 
 Bola.prototype.setRotation = function(angle){
+    
     let diff = angle - this.angle;
     this.obj.rotateY(degreesToRadians(diff));
-    if(angle >= 360){
-        angle = 360 - angle;
+    
+    if(angle < 0){
+        angle += 360;
     }
+    
+    if(angle >= 360){
+        angle -= 360;
+    }
+
     this.angle = angle;
 }
 

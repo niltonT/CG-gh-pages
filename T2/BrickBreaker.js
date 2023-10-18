@@ -34,8 +34,8 @@ const REBATEDOR_Y = 1;           // Y inicial rebatedor
 const BOLA_Y = 1;                // Y inicial bola
 const RAIO_BOLA = 0.6;            
 const BOLA_ANGLE = 90;           // Angulo incial da bola
-const VELOCIDADE_BOLA = 0.75;
-const VEL_MAX = 1.5;
+const VELOCIDADE_BOLA = 0.45;
+const VEL_MAX = 2;
 const COR_BOLA = 'darkorange';
 
 const VELOCIDADE_POWERUP = 0.4;
@@ -57,7 +57,7 @@ let start = false;
 let level = 1;
 let blocos_quebrados = 0;
 let velocidade_bola = VELOCIDADE_BOLA;
-let interval = ((VELOCIDADE_BOLA * VEL_MAX) - VELOCIDADE_BOLA) / (15 - 1);
+let interval = ((VELOCIDADE_BOLA * VEL_MAX) - VELOCIDADE_BOLA) / 14;
 let chamada = false;
 
 let keyboard = new KeyboardState();
@@ -137,11 +137,10 @@ function checkCollision() {
         bola.setRotation(blocos.calcAngulo(bola,bloco));
         if(bolas.getNum() < MAX_BALL){
           blocos_quebrados++;
-          if(blocos.blocosQuebrados() % DOUBLE_BALL == 0){
+          if(blocos_quebrados == DOUBLE_BALL){
             powerups.addDouble(bloco.obj.position);
+            blocos_quebrados = 0;
           }
-        }else{
-          blocos_quebrados = 0;
         }
       }
     }
@@ -156,6 +155,7 @@ function checkCollision() {
           let bola = bolas.add(RAIO_BOLA,COR_BOLA);
           bola.setPosition(position.x,position.y,position.z);
           bola.setRotation(angle + 35);
+          blocos_quebrados = 0;
         }
       }
       powerups.remove(powerup);
@@ -351,6 +351,10 @@ function render() {
 
   bolas.atualizaEstado(velocidade_bola);
   powerups.atualizaEstado(VELOCIDADE_POWERUP);
+
+  bolas.bolas.forEach(element => {
+    console.log(element.angle);
+  });
 
   requestAnimationFrame(render);
   renderer.render(scene, camera);
