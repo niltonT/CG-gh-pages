@@ -76,7 +76,11 @@ Rebatedor.prototype.calcAnguloSaida = function(bola){
     let angle = calcAnguloSaida(bola.angle,normal);
     
     if(angle > ANGULO_MAX){
-        angle = ANGULO_MAX;
+        if(angle <= 270){
+            angle = ANGULO_MAX;
+        }else{
+            angle = ANGULO_MIN;
+        }
     }
 
     if(angle < ANGULO_MIN){
