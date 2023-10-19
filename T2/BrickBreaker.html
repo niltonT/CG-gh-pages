@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="../html/resources/default.css">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <style>
+      .container{
+        width: 15%;
+        z-index: 100; 
+        position: absolute;
+        background-color: gray;
+        left: 20%;
+      }
       .label{
-       position: absolute;
-       background-color: gray;
-       z-index: 100;
-       color: white;
+        text-align: center;
+        color: white;
       }
     </style>
   </head>
@@ -24,8 +29,10 @@
   </script>  
 
 
-  <div class="label" id="#label">velocidade: 1x</div>
   <div id="webgl-output">     
+    <div class="container" id="container">
+      <div class="label" id="#label">velocidade: 1x</div>
+    </div>
     <script type="module" src="BrickBreaker.js"></script>
   </div>
 </body>

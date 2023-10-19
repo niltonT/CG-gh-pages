@@ -32,7 +32,7 @@ scene.add( axesHelper );
 let plane = createGroundPlaneXZ(20, 20)
 scene.add(plane);
 
-let rebatedor = new Rebatedor(1,1,'red');
+let rebatedor = new Rebatedor(1,1.5,'red');
 rebatedor.setPosition(0,-3,0);
 rebatedor.obj.rotateX(degreesToRadians(90));
 scene.add(rebatedor.obj);

@@ -39,7 +39,7 @@ const VEL_MAX = 2;
 const COR_BOLA = 'darkorange';
 
 const VELOCIDADE_POWERUP = 0.4;
-const DOUBLE_BALL = 2;          // A cada quantos blocos o powerup é liberado
+const DOUBLE_BALL = 10;          // A cada quantos blocos o powerup é liberado
 const MAX_BALL = 2;             // Numero maximo de bolas na fase
 
 const LEVELMAX = 2;
@@ -59,6 +59,7 @@ let blocos_quebrados = 0;
 let velocidade_bola = VELOCIDADE_BOLA;
 let interval = ((VELOCIDADE_BOLA * VEL_MAX) - VELOCIDADE_BOLA) / 14;
 let chamada = false;
+let num_double = 0;
 
 let keyboard = new KeyboardState();
 
@@ -75,7 +76,7 @@ let timer = new Timer(function(){
 
 // --- Light -----------------------
 
-light.position.copy(new THREE.Vector3(LARGURA / 2, 27, -ALTURA / 2));
+light.position.copy(new THREE.Vector3(LARGURA / 1.6, 15, -ALTURA / 2.6));
 light.shadow.mapSize.width = 2048;
 light.shadow.mapSize.height = 2048;
 light.shadow.camera.near = 0;
@@ -85,7 +86,7 @@ light.shadow.camera.right = LARGURA;
 light.shadow.camera.top = ALTURA;
 light.shadow.camera.bottom = -ALTURA;
 
-let ambientLight = new THREE.AmbientLight('gray',0.7);
+let ambientLight = new THREE.AmbientLight('white',0.25);
 scene.add(ambientLight);
 
 // --- Raycaster ------------------
@@ -110,7 +111,7 @@ scene.add(plane);
 let paredes = new Paredes(ALTURA, LARGURA, 2.3, 1);
 paredes.addToScene(scene);
 
-let rebatedor = new Rebatedor(1.2,1,'red');
+let rebatedor = new Rebatedor(1.2,1.5,'red');
 scene.add(rebatedor.obj);
 rebatedor.setPosition(0, REBATEDOR_Y, REBATEDOR_Z);
 
@@ -136,11 +137,14 @@ function checkCollision() {
       if(bloco != null){
         bola.setRotation(blocos.calcAngulo(bola,bloco));
         if(bolas.getNum() < MAX_BALL){
-          blocos_quebrados++;
-          if(blocos_quebrados == DOUBLE_BALL){
-            powerups.addDouble(bloco.obj.position);
-            blocos_quebrados = 0;
-          }
+            blocos_quebrados++;
+            if(blocos_quebrados == DOUBLE_BALL && num_double < 1){
+              powerups.addDouble(bloco.obj.position);
+              blocos_quebrados = 0;
+              num_double++;
+            }
+        }else{
+          blocos_quebrados = 0;
         }
       }
     }
@@ -155,7 +159,7 @@ function checkCollision() {
           let bola = bolas.add(RAIO_BOLA,COR_BOLA);
           bola.setPosition(position.x,position.y,position.z);
           bola.setRotation(angle + 35);
-          blocos_quebrados = 0;
+          num_double = 0;
         }
       }
       powerups.remove(powerup);
@@ -232,6 +236,9 @@ function checkRemove(){
   powerups.powerups.forEach(element => {
     let z = element.obj.position.z;
     if(z > (ALTURA / 2) + 3){
+      if(element instanceof DoubleBall){
+        num_double = 0;
+      }
       powerups.remove(element);
     }
   });
@@ -268,10 +275,13 @@ function atualizaKeyboard() {
   }
 
   if (keyboard.down('enter')) {
+    let container = document.getElementById("container");
     if (document.fullscreenElement) {
       document.exitFullscreen();
+      container.style.left = "20%";
     } else {
       document.documentElement.requestFullscreen();
+      container.style.left = "17%";
     }
   }
 
@@ -327,8 +337,8 @@ function reiniciaBola() {
     bolas.clear();
     bola = bolas.add(RAIO_BOLA,COR_BOLA);
   }
-  let position = rebatedor.position;
-  let x = position.x;
+
+  let x = rebatedor.position.x;
   let z = REBATEDOR_Z - rebatedor.raio - bola.raio;
   bola.setPosition(x, BOLA_Y, z);
   bola.setRotation(BOLA_ANGLE);
