@@ -39,7 +39,7 @@ const VEL_MAX = 2;
 const COR_BOLA = 'darkorange';
 
 const VELOCIDADE_POWERUP = 0.4;
-const DOUBLE_BALL = 3;          // A cada quantos blocos o powerup é liberado
+const DOUBLE_BALL = 10;          // A cada quantos blocos o powerup é liberado
 const MAX_BALL = 2;             // Numero maximo de bolas na fase
 
 const LEVELMAX = 2;
