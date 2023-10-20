@@ -25,7 +25,7 @@ import { DoubleBall ,Powerup } from './obj/powerup.js';
 
 // --- Constantes -----------
 
-const ALTURA = 56;               // Altura tela
+const ALTURA = 56;              // Altura tela
 const LARGURA = ALTURA / 2;      // Largura tela
 
 const REBATEDOR_Z = 30;          // Z inicial rebatedor
@@ -39,7 +39,7 @@ const VEL_MAX = 2;
 const COR_BOLA = 'darkorange';
 
 const VELOCIDADE_POWERUP = 0.4;
-const DOUBLE_BALL = 10;          // A cada quantos blocos o powerup é liberado
+const DOUBLE_BALL = 3;          // A cada quantos blocos o powerup é liberado
 const MAX_BALL = 2;             // Numero maximo de bolas na fase
 
 const LEVELMAX = 2;
@@ -136,15 +136,15 @@ function checkCollision() {
       let bloco = blocos.checkCollision(bola.bb);
       if(bloco != null){
         bola.setRotation(blocos.calcAngulo(bola,bloco));
-        if(bolas.getNum() < MAX_BALL){
+        if(bloco.dureza == 0){
+          if(bolas.getNum() < MAX_BALL && num_double < 1){
             blocos_quebrados++;
-            if(blocos_quebrados == DOUBLE_BALL && num_double < 1){
-              powerups.addDouble(bloco.obj.position);
+            if(blocos_quebrados == DOUBLE_BALL){
               blocos_quebrados = 0;
-              num_double++;
+              powerups.addDouble(bloco.obj.position);
+              num_double = 1;
             }
-        }else{
-          blocos_quebrados = 0;
+          }
         }
       }
     }
@@ -159,9 +159,10 @@ function checkCollision() {
           let bola = bolas.add(RAIO_BOLA,COR_BOLA);
           bola.setPosition(position.x,position.y,position.z);
           bola.setRotation(angle + 35);
-          num_double = 0;
+          blocos_quebrados = 0;
         }
       }
+      num_double = 0;
       powerups.remove(powerup);
     }
   });
@@ -214,6 +215,7 @@ function atualizaMove(){
   if (!start) {
     powerups.move = false;
     powerups.clear();
+    num_double = 0;
     bolas.setMove(false);
   } else {
     if (pause) {
@@ -263,6 +265,7 @@ function reiniciaGame() {
   atualizaEstado();
   blocos.reiniciaBlocos();
   reiniciaBola();
+  blocos_quebrados = 0;
 }
 
 function atualizaKeyboard() {
@@ -361,6 +364,9 @@ function render() {
 
   bolas.atualizaEstado(velocidade_bola);
   powerups.atualizaEstado(VELOCIDADE_POWERUP);
+
+  console.log("Quebrados: " + blocos_quebrados);
+  console.log("num: " + num_double);
 
   requestAnimationFrame(render);
   renderer.render(scene, camera);
