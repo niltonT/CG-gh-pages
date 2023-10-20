@@ -113,15 +113,23 @@ Blocos.prototype.calcAngulo = function(bola, bloco){
 
     if(angle >= 90 && angle <= 270){
         //colisao esquerda
-        if(bola_position.x > blocos_position.x + this.largura_bloco/2 + bola.raio/3){
-            return calcAnguloSaida(angle,90);
+        if(bola_position.x > blocos_position.x + this.largura_bloco/2.5){
+            if(bola_position.z <= blocos_position.z + this.altura/2 + bola.raio){
+                if(bola_position.z >= blocos_position.z - this.altura/2 - bola.raio){
+                    return calcAnguloSaida(angle,90);
+                }
+            }
         }
         return calcAnguloSaida(angle,0);
     }
     
-    if(bola_position.x < blocos_position.x - this.largura_bloco/2 - bola.raio/3){
-        //colisao direita
-        return calcAnguloSaida(angle,270);
+    //colisao direita
+    if(bola_position.x < blocos_position.x - this.largura_bloco/2.5){
+        if(bola_position.z <= blocos_position.z + this.altura/2 + bola.raio){
+            if(bola_position.z >= blocos_position.z - this.altura/2 - bola.raio){
+                return calcAnguloSaida(angle,270);
+            }
+        }
     }
     
     return calcAnguloSaida(angle,0);

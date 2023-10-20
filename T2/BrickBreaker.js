@@ -365,9 +365,6 @@ function render() {
   bolas.atualizaEstado(velocidade_bola);
   powerups.atualizaEstado(VELOCIDADE_POWERUP);
 
-  console.log("Quebrados: " + blocos_quebrados);
-  console.log("num: " + num_double);
-
   requestAnimationFrame(render);
   renderer.render(scene, camera);
 }
