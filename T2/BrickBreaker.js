@@ -19,10 +19,6 @@ import { Paredes } from './obj/paredes.js';
 import { Blocos } from './obj/blocos.js';
 import { DoubleBall ,Powerup } from './obj/powerup.js';
 
-/* === TO DO
-  - Criar uma classe abstrata para a classe powerup
-*/
-
 // --- Constantes -----------
 
 const ALTURA = 56;              // Altura tela
